@@ -16,6 +16,8 @@ test('Should calculate the correct aggregates for 4d6', () => {
     expect(stats.aggregates.sum).toEqual(13);
     expect(stats.aggregates.length).toEqual(4);
     expect(stats.aggregates.average).toEqual(3.25);
+    expect(stats.aggregates.lowestPossible).toEqual(4);
+    expect(stats.aggregates.highestPossible).toEqual(24);
 });
 
 test('Should calculate correct median', () => {
