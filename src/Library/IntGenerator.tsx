@@ -1,0 +1,1 @@
+export type IntGenerator = (min: number, max: number) => number;

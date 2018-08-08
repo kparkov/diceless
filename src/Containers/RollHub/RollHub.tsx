@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { RollPanel } from '../../Components/RollPanel/RollPanel';
-import { Converter } from '../../Library/Converter';
+import DiceFactory from '../../Library/DiceFactory';
 import { Die } from '../../Library/Die';
 import { IRoll } from '../../Library/IRoll';
 
@@ -11,11 +11,17 @@ export interface IRollHubState {
 }
 
 export class RollHub extends React.Component<{}, IRollHubState> {
+
+    private _factory : DiceFactory;
+
     constructor(props: {}) {
         super(props);
+        
+        this._factory = new DiceFactory();
+
         this.state = { 
             dieExpression: '',
-            rolls: [{ id: this.generateId(), dice: [ new Die(6), new Die(6), new Die(6) ] }]
+            rolls: [{ id: this.generateId(), dice: this._factory.createMultiple(3, 6) }]
         };
 
         this.addRoll = this.addRoll.bind(this);
@@ -41,7 +47,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
     }
 
     private async submitExpressionChange() {
-        const dice = Converter.parseString(this.state.dieExpression);
+        const dice = this._factory.createFromExpression(this.state.dieExpression);
 
         if (dice && dice.length > 0) {
             // await this.setState({ ...this.state, dieExpression: '' });
@@ -51,7 +57,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
     }
 
     private addRoll(dice: Die[]) {
-        const dicepool = dice.map(d => new Die(d.sides));
+        const dicepool = dice.map(d => this._factory.createSingle(d.sides));
         const newRoll : IRoll = { id: Math.random().toString(), dice: dicepool };
         const rolls : IRoll[] = [ ...this.state.rolls, newRoll ];
 

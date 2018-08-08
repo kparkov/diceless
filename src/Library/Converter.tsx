@@ -1,20 +1,26 @@
-import { Die } from "./Die";
+import DiceFactory from './DiceFactory';
+import { Die } from './Die';
 
 export class Converter {
-    public static parseString(representation: string): Die[] {
+
+    private _factory: DiceFactory;
+
+    constructor(factory?: DiceFactory) {
+        this._factory = factory || new DiceFactory();
+    }
+
+    public parseString(representation: string): Die[] {
         const cleaned = representation.replace(/\s/, '');
         const pattern = /\d+[dD]\d+/g;
         const matches = cleaned.match(pattern);
-        const result: Die[] = [];
+        let result: Die[] = [];
         
         if (matches) {
             for (const match of matches) {
                 const splitted = match.split(/[dD]/);
                 const [count, sides] = [ parseInt(splitted[0], 10), parseInt(splitted[1], 10) ];
-                
-                for (let i = 0; i < count; i++) {
-                    result.push(new Die(sides));
-                }
+
+                result = [ ...result, ...this._factory.createMultiple(count, sides) ];
             }
         }
 
