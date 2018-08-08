@@ -1,13 +1,14 @@
 import * as React from 'react';
 
-import { RollPanel } from '../../Components/RollPanel/RollPanel';
 import DiceFactory from '../../Library/DiceFactory';
 import { Die } from '../../Library/Die';
 import { IRoll } from '../../Library/IRoll';
 
+import ExpressionInput from '../../Components/Form/ExpressionInput';
+import { RollPanel } from '../../Components/RollPanel/RollPanel';
+
 export interface IRollHubState {
     rolls: IRoll[],
-    dieExpression: string
 }
 
 export class RollHub extends React.Component<{}, IRollHubState> {
@@ -20,34 +21,31 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         this._factory = new DiceFactory();
 
         this.state = { 
-            dieExpression: '',
             rolls: [{ id: this.generateId(), dice: this._factory.createMultiple(3, 6) }]
         };
 
         this.addRoll = this.addRoll.bind(this);
-        this.handleExpressionChange = this.handleExpressionChange.bind(this);
-        this.submitExpressionChange = this.submitExpressionChange.bind(this);
+        this.submitExpression = this.submitExpression.bind(this);
     }
 
     public render() {
+
+        const rolls = this.state.rolls.slice().reverse().map(roll =>
+            <RollPanel key={roll.id} roll={roll} onCopy={this.addRoll} />
+        );
+
         return (
             <div>
-                <input type="text" onChange={this.handleExpressionChange} value={this.state.dieExpression} /> <button onClick={this.submitExpressionChange}>Roll this!</button>
+                <ExpressionInput submitExpression={this.submitExpression} />
                 <div>
-                    {this.state.rolls.slice().reverse().map(roll => 
-                        <RollPanel key={roll.id} roll={roll} onCopy={this.addRoll} />
-                    )}
+                    {rolls}
                 </div>
             </div>
         );
     }
 
-    private handleExpressionChange(e: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ dieExpression: e.target.value });
-    }
-
-    private async submitExpressionChange() {
-        const dice = this._factory.createFromExpression(this.state.dieExpression);
+    private async submitExpression(expression: string) {
+        const dice = this._factory.createFromExpression(expression);
 
         if (dice && dice.length > 0) {
             // await this.setState({ ...this.state, dieExpression: '' });

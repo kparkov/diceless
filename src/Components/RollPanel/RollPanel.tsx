@@ -4,7 +4,8 @@ import { Die } from '../../Library/Die';
 import { IRoll } from '../../Library/IRoll';
 import PoolStats from '../../Library/PoolStats';
 
-import { DieVisual } from '../Die/DieVisual';
+import DicePanel from '../Die/DicePanel';
+import StatHeadlines from '../StatHeadlines/StatHeadlines';
 
 export interface IRollPanelProps {
     roll: IRoll;
@@ -25,26 +26,11 @@ export class RollPanel extends React.Component<IRollPanelProps, {}> {
     public render() : JSX.Element {
 
         return (
-            <div style={{ padding: '10px 0', borderBottom: '1px solid black' }}>
-                <div style={{ display: 'flex' }}>
-                    {this.props.roll.dice.map(d => <DieVisual key={d.id} value={d.value} sides={d.sides} />)}
-                    {this.renderAggregates()}
-                </div>
-                <div style={{ float: 'right', position: 'relative', top: '-15px' }}>
-                    <button onClick={this.handleCopy}>Roll again</button>
-                </div>
+            <div style={{ padding: '10px 10px', borderBottom: '1px solid black' }}>
+                <DicePanel roll={this.props.roll} />
+                <StatHeadlines stats={this._stats} />
             </div>
         );
-    }
-
-    private renderAggregates() : JSX.Element | null {
-        if (this.props.roll.dice.length <= 1) {
-            return null;
-        }
-
-        const ag = this._stats.aggregates;
-
-        return <span>= {ag.sum} (total) / {ag.maximum} (high) / {ag.minimum} (low) / {ag.median} (median) / {ag.average} (avg.) / {ag.expected} (expected)</span>;
     }
 
     private handleCopy(): void {

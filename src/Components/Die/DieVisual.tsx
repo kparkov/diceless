@@ -9,8 +9,9 @@ export class DieVisual extends React.Component<IDieProps, {}> {
     public render() {
         return (
             <div style={{
-                backgroundColor: '#eeeeee',
+                backgroundColor: '#EFEEDA',
                 border: '2px solid black',
+                borderRadius: '5px',
                 fontSize: '18px',
                 margin: '0 5px 0 0',
                 minWidth: '30px',
