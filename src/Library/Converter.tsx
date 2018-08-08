@@ -26,4 +26,15 @@ export class Converter {
 
         return result;
     }
+
+    public serialize(pool: Die[]) {
+        const distribution : { [sides: number]: number } = {};
+        
+        for (const die of pool) {
+            distribution[die.sides] = distribution[die.sides] ? distribution[die.sides] + 1 : 1;
+        }
+
+        const strings = Object.keys(distribution).map(key => `${distribution[key]}d${key}`);
+        return strings.reverse().join(' + ');
+    }
 }

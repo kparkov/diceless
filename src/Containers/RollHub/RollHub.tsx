@@ -1,7 +1,8 @@
 import * as React from 'react';
 
+import { Converter } from '../../Library/Converter';
 import DiceFactory from '../../Library/DiceFactory';
-import { Die } from '../../Library/Die';
+import IdGenerator from '../../Library/IdGenerator';
 import { IRoll } from '../../Library/IRoll';
 
 import ExpressionInput from '../../Components/Form/ExpressionInput';
@@ -21,7 +22,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         this._factory = new DiceFactory();
 
         this.state = { 
-            rolls: [{ id: this.generateId(), dice: this._factory.createMultiple(3, 6) }]
+            rolls: [ this.createRoll('4d6') as IRoll ]
         };
 
         this.addRoll = this.addRoll.bind(this);
@@ -31,7 +32,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
     public render() {
 
         const rolls = this.state.rolls.slice().reverse().map(roll =>
-            <RollPanel key={roll.id} roll={roll} onCopy={this.addRoll} />
+            <RollPanel key={roll.id} roll={roll} />
         );
 
         return (
@@ -45,25 +46,29 @@ export class RollHub extends React.Component<{}, IRollHubState> {
     }
 
     private async submitExpression(expression: string) {
-        const dice = this._factory.createFromExpression(expression);
+        const roll = this.createRoll(expression);
 
-        if (dice && dice.length > 0) {
-            // await this.setState({ ...this.state, dieExpression: '' });
-            dice.sort((a, b) => b.sides - a.sides);
-            this.addRoll(dice);
+        if (roll) {
+            this.addRoll(roll);
         }
     }
 
-    private addRoll(dice: Die[]) {
-        const dicepool = dice.map(d => this._factory.createSingle(d.sides));
-        const newRoll : IRoll = { id: Math.random().toString(), dice: dicepool };
-        const rolls : IRoll[] = [ ...this.state.rolls, newRoll ];
-
+    private addRoll(roll: IRoll) {
+        const rolls : IRoll[] = [ ...this.state.rolls, roll ];
         this.setState({ rolls });
         window.scrollTo(0, 0);
     }
 
-    private generateId(): string {
-        return Math.random().toString();
+    private createRoll(expression: string) : IRoll | null {
+        const dice = this._factory.createFromExpression(expression);
+        const converter = new Converter(this._factory);
+
+        if (dice && dice.length > 0) {
+            dice.sort((a, b) => b.sides - a.sides);
+            const roll : IRoll = { id: IdGenerator.id(), dice, expression: converter.serialize(dice) };
+            return roll;
+        }
+
+        return null;
     }
 }

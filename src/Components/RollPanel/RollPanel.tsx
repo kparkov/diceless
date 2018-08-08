@@ -9,7 +9,7 @@ import StatHeadlines from '../StatHeadlines/StatHeadlines';
 
 export interface IRollPanelProps {
     roll: IRoll;
-    onCopy: (d: Die[]) => void
+    onCopy?: (d: Die[]) => void
 }
 
 export class RollPanel extends React.Component<IRollPanelProps, {}> {
@@ -26,7 +26,16 @@ export class RollPanel extends React.Component<IRollPanelProps, {}> {
     public render() : JSX.Element {
 
         return (
-            <div style={{ padding: '10px 10px', borderBottom: '1px solid black' }}>
+            <div style={{ padding: '10px 10px', borderBottom: '1px solid black', textAlign: 'left' }}>
+                <div 
+                    style={{ 
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        margin: '0 0 10px 0'
+                    }}
+                >
+                    {this.props.roll.expression}
+                </div>
                 <DicePanel roll={this.props.roll} />
                 <StatHeadlines stats={this._stats} />
             </div>
@@ -34,6 +43,8 @@ export class RollPanel extends React.Component<IRollPanelProps, {}> {
     }
 
     private handleCopy(): void {
-        this.props.onCopy(this.props.roll.dice);
+        if (this.props.onCopy) {
+            this.props.onCopy(this.props.roll.dice);
+        }
     }
 }
