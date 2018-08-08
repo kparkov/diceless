@@ -2,6 +2,7 @@ import { Die } from "./Die";
 
 interface IAggregates {
     average: number;
+    complexity: number;
     expected: number;
     length: number;
     maximum: number;
@@ -44,6 +45,7 @@ export default class PoolStats {
         let expected = 0;
         let highestPossible = 0;
         let lowestPossible = 0;
+        let complexity = 0;
         
         
         if (length > 0) {
@@ -55,10 +57,12 @@ export default class PoolStats {
             highestPossible = sides.reduce((p, c) => p + c);
             lowestPossible = length;
             expected = sides.map(x => x + 1).reduce((p, c) => p + c) / 2;
+            complexity = sides.reduce((p, c) => p * c);
         }
 
         return {
             average,
+            complexity,
             expected,
             highestPossible,
             length,

@@ -28,3 +28,11 @@ test('Should calculate correct median', () => {
     expect(statsFrom([2, 4, 6, 8]).aggregates.median).toEqual(5);
     expect(statsFrom([2, 4, 8, 15, 22, 23]).aggregates.median).toEqual(11.5);
 });
+
+test('Should calculate correct complexity', () => {
+    const factory = new DiceFactory('seed');
+    const dice = factory.createFromExpression('3d8 + 4d6');
+    const stats = new PoolStats(dice);
+
+    expect(stats.aggregates.complexity).toEqual(663552);
+});
