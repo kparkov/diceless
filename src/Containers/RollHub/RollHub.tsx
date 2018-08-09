@@ -24,9 +24,6 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         this.state = { 
             rolls: [ this.createRoll('4d6') as IRoll ]
         };
-
-        this.addRoll = this.addRoll.bind(this);
-        this.submitExpression = this.submitExpression.bind(this);
     }
 
     public render() {
@@ -45,7 +42,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         );
     }
 
-    private async submitExpression(expression: string) {
+    private submitExpression = (expression: string) => {
         const roll = this.createRoll(expression);
 
         if (roll) {
@@ -53,7 +50,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         }
     }
 
-    private addRoll(roll: IRoll) {
+    private addRoll = (roll: IRoll) => {
         const rolls : IRoll[] = [ ...this.state.rolls, roll ];
         this.setState({ rolls });
         window.scrollTo(0, 0);

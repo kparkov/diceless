@@ -2,7 +2,7 @@ import * as React from 'react';
 import TextField from './TextField';
 
 interface IExpressionInputProps {
-    submitExpression: (expression: string) => Promise<void>
+    submitExpression: (expression: string) => void
 }
 
 interface IExpressionInputState {
@@ -13,9 +13,6 @@ interface IExpressionInputState {
 export default class ExpressionInput extends React.Component<IExpressionInputProps, IExpressionInputState> {
     constructor(props: IExpressionInputProps) {
         super(props);
-        this.handleExpressionChange = this.handleExpressionChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
         this.state = { expression: '', windowWidth: 0 };
     }
@@ -40,26 +37,22 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
                         fontSize: '28px',
                         margin: '10px 0 20px 10px',
                         padding: '5px',
-                        width: this.state.windowWidth - 35
+                        width: this.state.windowWidth - 45
                     }}
-                    placeholder="Dice expression ('3d6 + 1d4')"
+                    placeholder="Expression"
                 />
             </div>
         )
     }
 
-    private handleExpressionChange(e: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ expression: e.target.value });
-    }
+    private handleExpressionChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ expression: e.target.value });
 
-    private handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    private handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             this.props.submitExpression(this.state.expression);
             this.setState({ expression: '' });
         }
     }
 
-    private updateWindowDimensions() {
-        this.setState({ windowWidth: window.innerWidth });
-    }
+    private updateWindowDimensions = () => this.setState({ windowWidth: window.innerWidth });
 }
