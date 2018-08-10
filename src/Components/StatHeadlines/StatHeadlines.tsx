@@ -1,6 +1,8 @@
 import * as React from 'react';
+
 import PoolStats from '../../Library/PoolStats';
-import Label from '../Label/Label';
+
+import KeyValueLabel from '../Label/KeyValueLabel';
 
 interface IStatHeadlinesProps {
     stats: PoolStats
@@ -25,11 +27,11 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
 
         return (
             <div style={{ margin: '10px 0', textAlign: 'left', fontSize: '12px' }}>
-                <Label background={palette.color1} color="white">Sum: {aggregates.sum}</Label>
-                <Label background={palette.color2} color="white">Average: {aggregates.average}</Label>
-                <Label background={palette.color4} color="white">High: {aggregates.maximum}</Label>
-                <Label background={palette.color5} color="white">Low: {aggregates.minimum}</Label>
-                <Label background={palette.color3} color="black">Expected: {aggregates.expected}</Label>
+                <KeyValueLabel background={palette.color1} color="white" title="sum" value={aggregates.sum} />
+                <KeyValueLabel background={palette.color2} color="white" title="avg" value={aggregates.average}/>
+                <KeyValueLabel background={palette.color4} color="white" title="hi" value={aggregates.maximum}/>
+                <KeyValueLabel background={palette.color5} color="white" title="lo" value={aggregates.minimum}/>
+                <KeyValueLabel background={palette.color3} color="black" title="exp" value={aggregates.expected}/>
             </div>
         );
     }
