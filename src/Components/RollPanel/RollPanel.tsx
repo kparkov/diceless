@@ -36,7 +36,7 @@ export class RollPanel extends React.Component<IRollPanelProps, {}> {
                 >
                     {this.props.roll.expression}
                 </div>
-                <DicePanel roll={this.props.roll} />
+                <DicePanel roll={this.props.roll} stats={this._stats} />
                 <StatHeadlines stats={this._stats} />
             </div>
         );
