@@ -20,15 +20,16 @@ interface IRarity {
     check: (fraction: number) => boolean;
     text: string;
     color: string;
+    isRare: boolean;
 }
 
 const rarityChecks : IRarity[] = [
-    { check: (fraction) => fraction < 0.005, text: 'Legendary', color: '#F26419' },
-    { check: (fraction) => fraction < 0.01, text: 'Epic', color: '#F6AE2D' },
-    { check: (fraction) => fraction < 0.02, text: 'Very rare', color: 'blue' },
-    { check: (fraction) => fraction < 0.05, text: 'Rare', color: '#027AD6' },
-    { check: (fraction) => fraction < 0.1, text: 'Uncommon', color: '#0160A8' },
-    { check: (fraction) => true, text: 'Common', color: 'gray' },
+    { check: (fraction) => fraction < 0.001, text: 'Absurdly rare', color: '#F26419', isRare: true },
+    { check: (fraction) => fraction < 0.01, text: 'Extremely rare', color: '#F6AE2D', isRare: true },
+    { check: (fraction) => fraction < 0.02, text: 'Very rare', color: 'blue', isRare: true },
+    { check: (fraction) => fraction < 0.05, text: 'Rare', color: '#027AD6', isRare: true },
+    { check: (fraction) => fraction < 0.1, text: 'Uncommon', color: '#0160A8', isRare: true },
+    { check: (fraction) => true, text: 'Common', color: 'gray', isRare: false },
 ];
 
 export default class StatHeadlines extends React.Component<IStatHeadlinesProps, {}> {
@@ -40,6 +41,8 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
         const atLeast = distribution.percentage(distribution.combinationCountsOf(aggregates.sum).atLeast);
         const atMost = distribution.percentage(distribution.combinationCountsOf(aggregates.sum).atMost);
         const rarity = this.getRarity(Math.min(atLeast, atMost));
+        const isHigh = aggregates.sum > aggregates.expected;
+        const hiloString = rarity.isRare ? `(${isHigh ? 'high' : 'low'})` : null;
 
         if (aggregates.length === 1) {
             return null;
@@ -52,7 +55,7 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
                     fontSize: '16px',
                     fontWeight: 'bold',
                     padding: '10px 0',
-                }}>{rarity.text}</div>
+                }}>{rarity.text} {hiloString}</div>
                 <KeyValueLabel background={palette.color1} color="white" title="sum" value={aggregates.sum} />
                 <KeyValueLabel background={palette.color2} color="white" title="avg" value={aggregates.average}/>
                 <KeyValueLabel background={palette.color4} color="white" title="hi" value={aggregates.maximum}/>
@@ -78,6 +81,7 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
         return {
             check: (x) => true,
             color: 'black',
+            isRare: false,
             text: 'NOT FOUND',
         };
     }

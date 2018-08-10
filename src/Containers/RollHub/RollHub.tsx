@@ -51,7 +51,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
     }
 
     private addRoll = (roll: IRoll) => {
-        const rolls : IRoll[] = [ ...this.state.rolls, roll ];
+        const rolls : IRoll[] = [ ...this.state.rolls.slice().reverse().slice(0, 20).reverse(), roll ];
         this.setState({ rolls });
         window.scrollTo(0, 0);
     }
