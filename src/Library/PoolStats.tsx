@@ -1,4 +1,5 @@
 import { Die } from "./Die";
+import Distribution from "./Distribution";
 
 interface IAggregates {
     average: number;
@@ -19,10 +20,10 @@ export default class PoolStats {
     private _dice: Die[];
 
     private _aggregates : IAggregates | null = null;
+    private _distribution : Distribution | null = null;
     
     constructor(dice: Die[]) {
         this._dice = dice;
-        this.createAggregates();
     }
 
     public get aggregates() : IAggregates {
@@ -31,6 +32,14 @@ export default class PoolStats {
         }
 
         return this._aggregates;
+    }
+
+    public get distribution(): Distribution {
+        if (this._distribution === null) {
+            this._distribution = new Distribution(this._dice.map(x => x.sides));
+        }
+
+        return this._distribution;
     }
 
     private createAggregates() : IAggregates {

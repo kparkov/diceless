@@ -1,4 +1,4 @@
-interface ICombinationCount { 
+export interface ICombinationCount { 
     value: number, 
     combinations: number,
     atLeast: number,
@@ -18,14 +18,14 @@ export default class Distribution {
         }
     }
 
-    public combinationCountsOf(value: number): number {
+    public combinationCountsOf(value: number): ICombinationCount {
         const result = this._combinationCounts.filter(x => x.value === value);
 
         if (result.length === 1) {
-            return result[0].combinations;
+            return result[0];
         }
 
-        return 0;
+        return { value, combinations: 0, atLeast: 0, atMost: 0 };
     }
 
     public combinationCounts(): ICombinationCount[] {
@@ -37,7 +37,7 @@ export default class Distribution {
     }
 
     public percentage(combinationCount: number): number {
-        return Math.round((combinationCount / this._combinations) * 10000) / 10000;
+        return combinationCount / this._combinations;
     }
 
     private generateDistribution(): ICombinationCount[] {

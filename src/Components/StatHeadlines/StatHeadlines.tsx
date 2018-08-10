@@ -16,10 +16,30 @@ const palette = {
     color5: "rgba(234, 23, 68, 1)",
 }
 
+interface IRarity {
+    check: (fraction: number) => boolean;
+    text: string;
+    color: string;
+}
+
+const rarityChecks : IRarity[] = [
+    { check: (fraction) => fraction < 0.005, text: 'Legendary', color: '#F26419' },
+    { check: (fraction) => fraction < 0.01, text: 'Epic', color: '#F6AE2D' },
+    { check: (fraction) => fraction < 0.02, text: 'Very rare', color: 'blue' },
+    { check: (fraction) => fraction < 0.05, text: 'Rare', color: '#027AD6' },
+    { check: (fraction) => fraction < 0.1, text: 'Uncommon', color: '#0160A8' },
+    { check: (fraction) => true, text: 'Common', color: 'gray' },
+];
+
 export default class StatHeadlines extends React.Component<IStatHeadlinesProps, {}> {
     public render() {
 
         const aggregates = this.props.stats.aggregates;
+        const distribution = this.props.stats.distribution;
+
+        const atLeast = distribution.percentage(distribution.combinationCountsOf(aggregates.sum).atLeast);
+        const atMost = distribution.percentage(distribution.combinationCountsOf(aggregates.sum).atMost);
+        const rarity = this.getRarity(Math.min(atLeast, atMost));
 
         if (aggregates.length === 1) {
             return null;
@@ -27,12 +47,38 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
 
         return (
             <div style={{ margin: '10px 0', textAlign: 'left', fontSize: '12px' }}>
+                <div style={{ 
+                    color: rarity.color,
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    padding: '10px 0',
+                }}>{rarity.text}</div>
                 <KeyValueLabel background={palette.color1} color="white" title="sum" value={aggregates.sum} />
                 <KeyValueLabel background={palette.color2} color="white" title="avg" value={aggregates.average}/>
                 <KeyValueLabel background={palette.color4} color="white" title="hi" value={aggregates.maximum}/>
                 <KeyValueLabel background={palette.color5} color="white" title="lo" value={aggregates.minimum}/>
                 <KeyValueLabel background={palette.color3} color="black" title="exp" value={aggregates.expected}/>
+                <KeyValueLabel background="green" color="white" title="at least" value={this.percentageString(atLeast)} />
+                <KeyValueLabel background="green" color="white" title="at most" value={this.percentageString(atMost)} />
             </div>
         );
+    }
+
+    private percentageString(fraction: number): string {
+        return (Math.round(fraction * 10000) / 100) + '%';
+    }
+
+    private getRarity(loPercentage: number): IRarity {
+        for (const rarity of rarityChecks) {
+            if (rarity.check(loPercentage)) {
+                return rarity;
+            }
+        }
+
+        return {
+            check: (x) => true,
+            color: 'black',
+            text: 'NOT FOUND',
+        };
     }
 }
