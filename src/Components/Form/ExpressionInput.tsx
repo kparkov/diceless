@@ -18,7 +18,7 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
 
         this.state = { 
             expression: '', 
-            history: [ '3d6', '4d6', '5d6', '1d4', '1d6', '1d8', '1d10', '1d12', '1d20', '1d100', '1d100+2d20+3d12+4d8+5d6+6d4' ],
+            history: [ '3d6', '4d6', '5d6', '1d4', '1d6', '1d8', '1d10', '1d12', '1d20', '1d100' ],
             windowWidth: 0 
         };
     }

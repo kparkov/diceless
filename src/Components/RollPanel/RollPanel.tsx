@@ -6,6 +6,7 @@ import PoolStats from '../../Library/PoolStats';
 
 import DicePanel from '../Die/DicePanel';
 // import DistributionGraph from '../Distribution/DistributionGraph';
+import DistributionGraph, { DisplayMode } from '../Distribution/DistributionGraph';
 import StatHeadlines from '../StatHeadlines/StatHeadlines';
 
 export interface IRollPanelProps {
@@ -13,7 +14,11 @@ export interface IRollPanelProps {
     onCopy?: (d: Die[]) => void
 }
 
-export class RollPanel extends React.Component<IRollPanelProps, {}> {
+interface IRollPanelState {
+    displayGraph: DisplayMode | null;
+}
+
+export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState> {
 
     private _stats: PoolStats;
 
@@ -22,6 +27,7 @@ export class RollPanel extends React.Component<IRollPanelProps, {}> {
         this.handleCopy = this.handleCopy.bind(this);
 
         this._stats = new PoolStats(props.roll.dice);
+        this.state = { displayGraph: null };
     }
 
     public render() : JSX.Element {
@@ -38,6 +44,27 @@ export class RollPanel extends React.Component<IRollPanelProps, {}> {
                 </div>
                 <DicePanel roll={this.props.roll} stats={this._stats} />
                 <StatHeadlines stats={this._stats} />
+                {this.renderGraph()}
+            </div>
+        );
+    }
+
+    private renderGraph() {
+
+        const graph = this.state.displayGraph == null ? null : <DistributionGraph stats={this._stats} display={this.state.displayGraph} />
+
+        // tslint:disable:jsx-no-lambda
+        return (
+            <div>
+                <div>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: null })}>No distribution</button>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: DisplayMode.atleast })}>At least</button>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: DisplayMode.atmost })}>At most</button>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: DisplayMode.exact })}>Exact probability</button>
+                </div>
+                <div>
+                    {graph}
+                </div>
             </div>
         );
     }
