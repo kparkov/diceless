@@ -51,8 +51,17 @@ This will expose the dice-roller on port 5000.
 - Shared session of dice rolling.
 - Mobile version.
 
-## Why tho?
+## Development progression
 
 This is mainly a hobby project, and I have no idea whether it has any appeal to gamers, who generally appreciate the tactile experience of rolling actual dice. I thought it would be interesting to make, especially as I wanted to try out developing React with TypeScript.
 
 If it matures to a state I consider useful enough, I will publish it to a public domain.
+
+I only have the time to keep the development at low intensity. To speed up development and elevate the ambitions of the project, it would require collaborators.
+
+## Contributions
+
+I accept pull requests after review, and the review will require that:
+
+- The TS lint configuration is respected.
+- Non-components / library classes are unit tested.
