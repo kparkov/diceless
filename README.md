@@ -1,5 +1,7 @@
 # Dice Roller Toolkit
 
+![screenshot](res/screen.gif)
+
 ## Quick start
 
 This project was kickstarted using [create-react-app with TypeScript](https://github.com/Microsoft/TypeScript-React-Starter). You need node installed to run it. To get started in development mode, clone this repository and cd into the directory. Then run:
