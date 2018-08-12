@@ -42,12 +42,16 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         );
     }
 
-    private submitExpression = (expression: string) => {
+    private submitExpression = (expression: string): string | null => {
         const roll = this.createRoll(expression);
 
         if (roll) {
             this.addRoll(roll);
+            const converter = new Converter(this._factory);
+            return converter.serialize(roll.dice);
         }
+
+        return null;
     }
 
     private addRoll = (roll: IRoll) => {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import TextField from './TextField';
 
 interface IExpressionInputProps {
-    submitExpression: (expression: string) => void
+    submitExpression: (expression: string) => string | null
 }
 
 interface IExpressionInputState {
@@ -87,11 +87,17 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
     private updateWindowDimensions = () => this.setState({ windowWidth: window.innerWidth });
 
     private submitExpression(expression: string) {
-        this.props.submitExpression(expression);
+        const actualizedExpression = this.props.submitExpression(expression);
+
+        if (!actualizedExpression) {
+            this.setState({ expression: '' });
+            return;
+        }
+
         let history = this.state.history.slice(0, 15);
 
-        if (!history.some(exp => expression === exp)) {
-            history = [ expression, ...history ];
+        if (!history.some(exp => actualizedExpression === exp)) {
+            history = [ actualizedExpression, ...history ];
         }
         
         this.setState({ expression: '', history });
