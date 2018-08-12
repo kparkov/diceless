@@ -17,6 +17,12 @@ npm start
 
 This will expose the dice-roller on port 3000.
 
+If you want to run the test, you can do so by running (after running install):
+
+```shell
+npm test
+```
+
 ### Docker
 
 There is also a dockerfile included. If you have docker installed, you can run:
@@ -27,3 +33,26 @@ docker run -it -p 5000:5000 dice-roller
 ```
 
 This will expose the dice-roller on port 5000.
+
+## Features
+
+- Write a dice expression and roll it pressing enter.
+- Previous expressions are shown as buttons for quick re-rolling.
+- See quick stats about the roll: sum, average, highest, lowest, probability (at most, at least).
+- See the detailed distribution graph for exactly this roll, at most and at least.
+- Everything happens on the client; there is no backend. Collaborative features might change that in the future.
+
+## Possible improvements
+
+- Add a constant to the roll.
+- Complex logic (for example, roll 4d6 and discard the lowest)
+- Special dice (Fate dice, dice with symbols, repeated sides, etc.)
+- Keyboard shortcuts.
+- Shared session of dice rolling.
+- Mobile version.
+
+## Why tho?
+
+This is mainly a hobby project, and I have no idea whether it has any appeal to gamers, who generally appreciate the tactile experience of rolling actual dice. I thought it would be interesting to make, especially as I wanted to try out developing React with TypeScript.
+
+If it matures to a state I consider useful enough, I will publish it to a public domain.
