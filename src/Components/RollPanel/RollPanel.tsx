@@ -27,7 +27,7 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
         this.handleCopy = this.handleCopy.bind(this);
 
         this._stats = new PoolStats(props.roll.dice);
-        this.state = { displayGraph: null };
+        this.state = { displayGraph: DisplayMode.atleast };
     }
 
     public render() : JSX.Element {

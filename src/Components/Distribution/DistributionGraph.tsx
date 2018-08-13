@@ -63,14 +63,15 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
     }
 
     private renderBar(value: number, combinations: number, total: number) {
-        const fraction = ((combinations / total) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
-        // const fraction = (Math.round((combinations / total) * 10000) / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }) + '%';
+        const fraction = ((combinations / total) * 100)
+        const fractionString = fraction.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+        const cssFraction = fraction + '%';
         const rowStyle = this.props.stats.aggregates.sum === value ? { ...columnStyle, ...highlight } : columnStyle;
 
         return (
             <tr>
                 <td style={rowStyle}>{value}</td>
-                <td style={rowStyle}>{fraction}</td>
+                <td style={rowStyle}>{fractionString}</td>
                 <td style={rowStyle}>{combinations}</td>
                 <td style={{ ...rowStyle, width: 'auto' }}>
                     <div style={{
@@ -83,7 +84,7 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
                             backgroundColor: '#7C98B3',
                             fontSize: '10px',
                             height: '100%',
-                            width: fraction,
+                            width: cssFraction,
                         }}>
                             &nbsp;
                         </div>
