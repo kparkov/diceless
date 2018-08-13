@@ -27,7 +27,7 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
         this.handleCopy = this.handleCopy.bind(this);
 
         this._stats = new PoolStats(props.roll.dice);
-        this.state = { displayGraph: DisplayMode.atleast };
+        this.state = { displayGraph: null };
     }
 
     public render() : JSX.Element {
@@ -57,10 +57,10 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
         return (
             <div>
                 <div>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: null })}>No distribution</button>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: DisplayMode.atleast })}>At least</button>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: DisplayMode.atmost })}>At most</button>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setState({ displayGraph: DisplayMode.exact })}>Exact probability</button>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(null)}>No distribution</button>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(DisplayMode.atleast)}>At least</button>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(DisplayMode.atmost)}>At most</button>
+                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(DisplayMode.exact)}>Exact probability</button>
                 </div>
                 <div>
                     {graph}
@@ -73,5 +73,9 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
         if (this.props.onCopy) {
             this.props.onCopy(this.props.roll.dice);
         }
+    }
+
+    private setGraphDisplay = (mode: DisplayMode | null) => {
+        this.setState({ displayGraph: mode });
     }
 }

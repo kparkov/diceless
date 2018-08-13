@@ -3,7 +3,8 @@ import * as React from 'react';
 import TextField from './TextField';
 
 interface IExpressionInputProps {
-    submitExpression: (expression: string) => string | null
+    submitExpression: (expression: string) => string | null,
+    onClearHistory: () => void,
 }
 
 interface IExpressionInputState {
@@ -104,6 +105,7 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
     }
 
     private clearHistory = () => {
+        this.props.onClearHistory();
         this.setState({ history: [] });
     }
 }

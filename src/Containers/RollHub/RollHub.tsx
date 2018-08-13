@@ -34,7 +34,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
 
         return (
             <div>
-                <ExpressionInput submitExpression={this.submitExpression} />
+                <ExpressionInput submitExpression={this.submitExpression} onClearHistory={this.clearRolls} />
                 <div>
                     {rolls}
                 </div>
@@ -71,5 +71,9 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         }
 
         return null;
+    }
+
+    private clearRolls = () => {
+        this.setState({ rolls: [] });
     }
 }
