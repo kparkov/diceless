@@ -6,7 +6,8 @@ interface ITextFieldProps {
     value: string,
     style?: object,
     type?: "text" | "password",
-    placeholder?: string
+    placeholder?: string,
+    hotkey?: string,
 }
 
 export default class TextField extends React.Component<ITextFieldProps, {}> {
@@ -15,6 +16,20 @@ export default class TextField extends React.Component<ITextFieldProps, {}> {
         style: {},
         type: "text"
     };
+
+    private node: HTMLInputElement | null;
+
+    public componentDidMount() {
+        if (this.props.hotkey) {
+            document.addEventListener('keyup', this.checkSetFocus);
+        }
+    }
+
+    public componentWillUnmount() {
+        if (this.props.hotkey) {
+            document.removeEventListener('keyup', this.checkSetFocus);
+        }
+    }
 
     public render() {
         return (
@@ -25,7 +40,14 @@ export default class TextField extends React.Component<ITextFieldProps, {}> {
                 style={this.props.style}
                 value={this.props.value}
                 placeholder={this.props.placeholder}
+                ref={n => this.node = n}
             />
         )
+    }
+
+    private checkSetFocus = (event: KeyboardEvent) => {
+        if (this.props.hotkey && this.node && event.key.toLowerCase() === this.props.hotkey.toLowerCase()) {
+            this.node.focus();
+        }
     }
 }

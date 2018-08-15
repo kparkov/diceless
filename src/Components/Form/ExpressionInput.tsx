@@ -47,7 +47,8 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
                         padding: '5px',
                         width: this.state.windowWidth - 45
                     }}
-                    placeholder="Expression"
+                    placeholder="Dice expression"
+                    hotkey="l"
                 />
                 {this.renderHistory()}
             </div>

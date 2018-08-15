@@ -15,14 +15,10 @@ export default class Button<T=any> extends React.Component<IButtonProps<T>, {}> 
         return (
             <button
                 className={classname}
-                onClick={this.click}
+                onClick={() => this.props.onClick(this.props.item)}
             >
                 {this.props.children}
             </button>
         )
-    }
-
-    private click = () => {
-        this.props.onClick(this.props.item);
     }
 }
