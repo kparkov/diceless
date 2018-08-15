@@ -1,0 +1,28 @@
+.button {
+    margin: 0 5px 0 0;
+    padding: 7px 10px;
+    color: #333;
+    background-color: transparent;
+    font-weight: normal;
+    border: 2px solid #333;
+    cursor: pointer;
+    /* background-color: #278ead; */
+    transition: all 0.2s;
+}
+
+.button:hover {
+    background-color: #333;
+    color: white;
+}
+
+.button-cancel {
+    /* background-color: gray; */
+}
+
+.button-ok {
+    background-color: #d0ffe2;
+}
+
+.button-warning {
+    background-color: #F6AE2D;
+}

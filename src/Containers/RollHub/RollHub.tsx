@@ -6,6 +6,7 @@ import IdGenerator from '../../Library/IdGenerator';
 import { IRoll } from '../../Library/IRoll';
 
 import ExpressionInput from '../../Components/Form/ExpressionInput';
+import Introduction from '../../Components/Introduction/Introduction';
 import { RollPanel } from '../../Components/RollPanel/RollPanel';
 
 export interface IRollHubState {
@@ -22,7 +23,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         this._factory = new DiceFactory();
 
         this.state = { 
-            rolls: [ this.createRoll('4d6') as IRoll ]
+            rolls: []
         };
     }
 
@@ -37,6 +38,7 @@ export class RollHub extends React.Component<{}, IRollHubState> {
                 <ExpressionInput submitExpression={this.submitExpression} onClearHistory={this.clearRolls} />
                 <div>
                     {rolls}
+                    <Introduction />
                 </div>
             </div>
         );

@@ -4,8 +4,8 @@ import { Die } from '../../Library/Die';
 import { IRoll } from '../../Library/IRoll';
 import PoolStats from '../../Library/PoolStats';
 
+import Button from '../Button/Button';
 import DicePanel from '../Die/DicePanel';
-// import DistributionGraph from '../Distribution/DistributionGraph';
 import DistributionGraph, { DisplayMode } from '../Distribution/DistributionGraph';
 import StatHeadlines from '../StatHeadlines/StatHeadlines';
 
@@ -51,16 +51,19 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
 
     private renderGraph() {
 
+        if (this.props.roll.dice.length <= 1) {
+            return null;
+        }
+
         const graph = this.state.displayGraph == null ? null : <DistributionGraph stats={this._stats} display={this.state.displayGraph} />
 
-        // tslint:disable:jsx-no-lambda
         return (
             <div>
                 <div>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(null)}>No distribution</button>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(DisplayMode.atleast)}>At least</button>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(DisplayMode.atmost)}>At most</button>
-                    <button style={{ marginRight: '5px' }} onClick={() => this.setGraphDisplay(DisplayMode.exact)}>Exact probability</button>
+                    <Button<DisplayMode> onClick={this.setGraphDisplay} type="cancel">No distribution</Button>
+                    <Button<DisplayMode> onClick={this.setGraphDisplay} item={DisplayMode.atleast} type="ok">At least</Button>
+                    <Button<DisplayMode> onClick={this.setGraphDisplay} item={DisplayMode.atmost} type="ok">At most</Button>
+                    <Button<DisplayMode> onClick={this.setGraphDisplay} item={DisplayMode.exact} type="ok">Exact</Button>
                 </div>
                 <div>
                     {graph}
@@ -75,7 +78,11 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
         }
     }
 
-    private setGraphDisplay = (mode: DisplayMode | null) => {
-        this.setState({ displayGraph: mode });
+    private setGraphDisplay = (mode?: DisplayMode) => {
+        if (mode === undefined) {
+            this.setState({ displayGraph: null });
+        } else {
+            this.setState({ displayGraph: mode });
+        }
     }
 }

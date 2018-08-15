@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import Button from '../Button/Button';
 import TextField from './TextField';
 
 interface IExpressionInputProps {
@@ -55,24 +56,19 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
 
     private renderHistory() {
         const items = this.state.history.map((expression, index) => 
-            <button 
-                key={index} 
-                style={{
-                    backgroundColor: '#607B7D',
-                    border: '1px solid #3A606E',
-                    borderRadius: '5px',
-                    color: 'white',
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    margin: '0 5px 0 0',
-                }}
-                onClick={() => this.submitExpression(expression)} // tslint:disable-line
-            >{expression}</button>
+            <Button<string> 
+                key={expression} 
+                item={expression}
+                onClick={this.submitExpression}
+                type="ok"
+            >{expression}</Button>
         );
+
+        const clearLink = this.state.history.length > 0 ? <Button onClick={this.clearHistory} type="warning">Clear</Button> : null;
 
         return (
             <div style={{ padding: '0 10px' }}>
-                {items} <a onClick={this.clearHistory} href="#">clear history</a>
+                {items} {clearLink}
             </div>
         )
     }
@@ -81,13 +77,17 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            this.submitExpression(this.state.expression);
+            if (this.state.expression.length === 0 && this.state.history.length > 0) {
+                this.submitExpression(this.state.history[0]);
+            } else {
+                this.submitExpression(this.state.expression);
+            }
         }
     }
 
     private updateWindowDimensions = () => this.setState({ windowWidth: window.innerWidth });
 
-    private submitExpression(expression: string) {
+    private submitExpression = (expression: string) => {
         const actualizedExpression = this.props.submitExpression(expression);
 
         if (!actualizedExpression) {

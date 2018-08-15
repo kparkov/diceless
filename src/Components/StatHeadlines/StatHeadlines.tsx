@@ -14,6 +14,7 @@ const palette = {
     color3: "rgba(255, 140, 66, 1)",
     color4: "rgba(3, 71, 50, 1)",
     color5: "rgba(234, 23, 68, 1)",
+    color6: "#C8553D",
 }
 
 interface IRarity {
@@ -58,8 +59,9 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
                 }}>{rarity.text} {hiloString}</div>
                 <KeyValueLabel background={palette.color1} color="white" title="sum" value={aggregates.sum} />
                 <KeyValueLabel background={palette.color2} color="white" title="avg" value={aggregates.average}/>
-                <KeyValueLabel background={palette.color4} color="white" title="hi" value={aggregates.maximum}/>
                 <KeyValueLabel background={palette.color5} color="white" title="lo" value={aggregates.minimum}/>
+                <KeyValueLabel background={palette.color4} color="white" title="hi" value={aggregates.maximum}/>
+                <KeyValueLabel background={palette.color6} color="white" title="bounds" value={`${aggregates.lowestPossible}-${aggregates.highestPossible}`} />
                 <KeyValueLabel background={palette.color3} color="black" title="exp" value={aggregates.expected}/>
                 <KeyValueLabel background="green" color="white" title="at least" value={this.percentageString(atLeast)} />
                 <KeyValueLabel background="green" color="white" title="at most" value={this.percentageString(atMost)} />
