@@ -39,8 +39,8 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
         const aggregates = this.props.stats.aggregates;
         const distribution = this.props.stats.distribution;
 
-        const atLeast = distribution.percentage(distribution.combinationCountsOf(aggregates.sum).atLeast);
-        const atMost = distribution.percentage(distribution.combinationCountsOf(aggregates.sum).atMost);
+        const atLeast = distribution.percentage(distribution.permutationCountsOf(aggregates.sum).atLeast);
+        const atMost = distribution.percentage(distribution.permutationCountsOf(aggregates.sum).atMost);
         const rarity = this.getRarity(Math.min(atLeast, atMost));
         const isHigh = aggregates.sum > aggregates.expected;
         const hiloString = rarity.isRare ? `(${isHigh ? 'high' : 'low'})` : null;

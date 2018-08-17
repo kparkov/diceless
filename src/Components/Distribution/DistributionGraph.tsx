@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ICombinationCount } from '../../Library/Distribution';
+import { IPermutationCount } from '../../Library/Distribution';
 import PoolStats from '../../Library/PoolStats';
 
 export enum DisplayMode {
@@ -29,10 +29,17 @@ const highlight : React.CSSProperties = {
     backgroundColor: '#96D5F7'
 }
 
+const SCIENTIFIC_NOTATION_CUTOFF : number = 8;
+
 export default class DistributionGraph extends React.Component<IDistributionGraphProps, {}> {
+
     public render() {
-        const combinationsTotal = this.props.stats.distribution.combinations();
-        const rows = this.props.stats.distribution.combinationCounts().map(c => this.renderBar(c.value, this.selectNumber(c), combinationsTotal));
+        const permutationsTotal = this.props.stats.distribution.permutations();
+        const orderOfTotal = this.getNumberOrder(permutationsTotal);
+        const displayPermutations = orderOfTotal < 15;
+        const rows = this.props.stats.distribution.permutationCounts().map(c => 
+            this.renderBar(c.value, this.selectNumber(c), permutationsTotal, displayPermutations)
+        );
 
         return (
             <div style={{ margin: '25px 0 0 0' }}>
@@ -40,7 +47,7 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
                     <tr>
                         <th style={headerRowStyle}>Sum</th>
                         <th style={headerRowStyle}>Percent</th>
-                        <th style={headerRowStyle}>Combinations</th>
+                        {orderOfTotal < 16 ? <th style={headerRowStyle}>Permutations</th> : null}
                         <th style={{ ...headerRowStyle, width: 'auto' }}>&nbsp;</th>
                     </tr>
                     {rows}
@@ -49,7 +56,7 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
         )
     }
 
-    private selectNumber(c: ICombinationCount) {
+    private selectNumber(c: IPermutationCount) {
         switch(this.props.display) {
             case DisplayMode.atleast:
                 return c.atLeast;
@@ -58,21 +65,37 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
                 return c.atMost;
 
             case DisplayMode.exact:
-                return c.combinations;
+                return c.permutations;
         }
     }
 
-    private renderBar(value: number, combinations: number, total: number) {
-        const fraction = ((combinations / total) * 100)
+    private renderBar(value: number, permutations: number, total: number, displayPermutations: boolean) {
+        const fraction = ((permutations / total) * 100);
+
         const fractionString = fraction.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
         const cssFraction = fraction + '%';
         const rowStyle = this.props.stats.aggregates.sum === value ? { ...columnStyle, ...highlight } : columnStyle;
+
+        let permutationColumn : JSX.Element | null = null;
+
+        if (displayPermutations) {
+            const order = this.getNumberOrder(permutations);
+
+            if (order > SCIENTIFIC_NOTATION_CUTOFF) {
+                const firstThree = (parseInt(permutations.toString().replace(/[\.,]/g, '').slice(0, 3), 10) / 100).toLocaleString();
+                permutationColumn = <span>{firstThree} &times; 10<sup>{order - 1}</sup></span>;
+            } else {
+                permutationColumn = <span>{permutations.toLocaleString()}</span>;
+            }
+
+            permutationColumn = <td style={rowStyle}>{permutationColumn}</td>;
+        }
 
         return (
             <tr>
                 <td style={rowStyle}>{value}</td>
                 <td style={rowStyle}>{fractionString}</td>
-                <td style={rowStyle}>{combinations}</td>
+                {permutationColumn}
                 <td style={{ ...rowStyle, width: 'auto' }}>
                     <div style={{
                         backgroundColor: '#CEE5F2',
@@ -92,5 +115,9 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
                 </td>
             </tr>
         )
+    }
+
+    private getNumberOrder(number: number): number {
+        return Math.log(number) * Math.LOG10E + 1 | 0; // tslint:disable-line
     }
 }

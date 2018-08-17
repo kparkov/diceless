@@ -1,55 +1,55 @@
-export interface ICombinationCount { 
+export interface IPermutationCount { 
     value: number, 
-    combinations: number,
+    permutations: number,
     atLeast: number,
     atMost: number,
 };
 
 export default class Distribution {
     private _sides: number[] = [];
-    private _combinationCounts: ICombinationCount[] = [];
-    private _combinations: number = 0;
+    private _permutationCounts: IPermutationCount[] = [];
+    private _permutations: number = 0;
 
     constructor(sides: number[]) {
         this._sides = sides;
 
         if (this._sides.length > 0) {
-            this._combinationCounts = this.generateDistribution();
+            this._permutationCounts = this.generateDistribution();
         }
     }
 
-    public combinationCountsOf(value: number): ICombinationCount {
-        const result = this._combinationCounts.filter(x => x.value === value);
+    public permutationCountsOf(value: number): IPermutationCount {
+        const result = this._permutationCounts.filter(x => x.value === value);
 
         if (result.length === 1) {
             return result[0];
         }
 
-        return { value, combinations: 0, atLeast: 0, atMost: 0 };
+        return { value, permutations: 0, atLeast: 0, atMost: 0 };
     }
 
-    public combinationCounts(): ICombinationCount[] {
-        return this._combinationCounts.slice().sort((a, b) => a.value - b.value);
+    public permutationCounts(): IPermutationCount[] {
+        return this._permutationCounts.slice().sort((a, b) => a.value - b.value);
     }
 
-    public combinations(): number {
-        return this._combinations;
+    public permutations(): number {
+        return this._permutations;
     }
 
     public percentage(combinationCount: number): number {
-        return combinationCount / this._combinations;
+        return combinationCount / this._permutations;
     }
 
-    private generateDistribution(): ICombinationCount[] {
-        const base: ICombinationCount[] = [{ value: 0, combinations: 1, atLeast: 1, atMost: 1 }];
+    private generateDistribution(): IPermutationCount[] {
+        const base: IPermutationCount[] = [{ value: 0, permutations: 1, atLeast: 1, atMost: 1 }];
         // const minValue: number = this._sides.length;
         // const maxValue: number = this._sides.reduce((p, c) => p + c);
-        this._combinations = this._sides.reduce((p, c) => p * c);
+        this._permutations = this._sides.reduce((p, c) => p * c);
 
-        let cumulativeDistribution: ICombinationCount[] = base;
+        let cumulativeDistribution: IPermutationCount[] = base;
 
         for (const sides of this._sides) {
-            const currentDistribution: ICombinationCount[] = [];
+            const currentDistribution: IPermutationCount[] = [];
 
             const cumulativeMinValue: number = cumulativeDistribution.reduce((p, c) => p.value < c.value ? p : c).value;
             const lengthOfCumulative: number = cumulativeDistribution.length;
@@ -60,9 +60,9 @@ export default class Distribution {
                 const lastValueFromCumulative = i - 1;
 
                 const sliceOfCumulativeDistribution = cumulativeDistribution.filter(item => item.value >= firstValueFromCumulative && item.value <= lastValueFromCumulative);
-                const sumOfSlice = sliceOfCumulativeDistribution.map(x => x.combinations).reduce((p, c) => p + c);
+                const sumOfSlice = sliceOfCumulativeDistribution.map(x => x.permutations).reduce((p, c) => p + c);
 
-                currentDistribution.push({ value: i, combinations: sumOfSlice, atLeast: this._combinations - runningOccurences, atMost: runningOccurences + sumOfSlice });
+                currentDistribution.push({ value: i, permutations: sumOfSlice, atLeast: this._permutations - runningOccurences, atMost: runningOccurences + sumOfSlice });
                 runningOccurences += sumOfSlice;
             }
 
