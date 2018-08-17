@@ -11,7 +11,8 @@ interface IExpressionInputProps {
 interface IExpressionInputState {
     expression: string,
     windowWidth: number,
-    history: string[]
+    history: string[],
+    lastTriggeredExpression: string,
 }
 
 export default class ExpressionInput extends React.Component<IExpressionInputProps, IExpressionInputState> {
@@ -21,6 +22,7 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
         this.state = { 
             expression: '', 
             history: [ '3d6', '4d6', '5d6', '1d4', '1d6', '1d8', '1d10', '1d12', '1d20', '1d100' ],
+            lastTriggeredExpression: '',
             windowWidth: 0 
         };
     }
@@ -79,7 +81,10 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
     private handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             if (this.state.expression.length === 0 && this.state.history.length > 0) {
-                this.submitExpression(this.state.history[0]);
+                if (this.state.lastTriggeredExpression) {
+                    this.submitExpression(this.state.lastTriggeredExpression);
+                }
+                
             } else {
                 this.submitExpression(this.state.expression);
             }
@@ -102,7 +107,7 @@ export default class ExpressionInput extends React.Component<IExpressionInputPro
             history = [ actualizedExpression, ...history ];
         }
         
-        this.setState({ expression: '', history });
+        this.setState({ expression: '', history, lastTriggeredExpression: actualizedExpression });
     }
 
     private clearHistory = () => {
