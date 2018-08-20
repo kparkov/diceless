@@ -1,16 +1,17 @@
 import DiceFactory from "./DiceFactory";
-import { Die } from "./Die";
+import Die from "./Die";
+import Pool from "./Pool";
 import PoolStats from "./PoolStats";
 
 test('Should calculate the correct aggregates for 4d6', () => {
     const factory = new DiceFactory('seed6');
-    const dice = factory.createFromExpression('4d6');
+    const pool : Pool = factory.createFromExpression('4d6');
 
-    expect(dice).toHaveLength(4);
+    expect(pool.dice).toHaveLength(4);
 
-    expect(dice.map(d => d.value).reduce((p, c) => p + c)).toEqual(13);
+    expect(pool.dice.map(d => d.value).reduce((p, c) => p + c)).toEqual(13);
 
-    const stats = new PoolStats(dice);
+    const stats = new PoolStats(pool);
 
     expect(stats.aggregates.values).toEqual([2, 2, 3, 6]);
     expect(stats.aggregates.sum).toEqual(13);
@@ -22,7 +23,8 @@ test('Should calculate the correct aggregates for 4d6', () => {
 
 test('Should calculate correct median', () => {
     function statsFrom(values: number[]): PoolStats {
-        return new PoolStats(values.map(v => new Die({ generator: (min: number, max: number) => v, sides: 100 })));
+        const pool = new Pool(values.map(v => new Die({ generator: (min: number, max: number) => v, sides: 100 })), 0);
+        return new PoolStats(pool);
     }
 
     expect(statsFrom([2, 4]).aggregates.median).toEqual(3);
@@ -33,8 +35,8 @@ test('Should calculate correct median', () => {
 
 test('Should calculate correct complexity', () => {
     const factory = new DiceFactory('seed');
-    const dice = factory.createFromExpression('3d8 + 4d6');
-    const stats = new PoolStats(dice);
+    const pool : Pool = factory.createFromExpression('3d8 + 4d6');
+    const stats = new PoolStats(pool);
 
     expect(stats.aggregates.complexity).toEqual(663552);
 });

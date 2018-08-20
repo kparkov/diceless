@@ -1,16 +1,14 @@
 import * as React from 'react';
 
-import { Converter } from '../../Library/Converter';
 import DiceFactory from '../../Library/DiceFactory';
-import IdGenerator from '../../Library/IdGenerator';
-import { IRoll } from '../../Library/IRoll';
+import Pool from '../../Library/Pool';
 
 import ExpressionInput from '../../Components/Form/ExpressionInput';
 import Introduction from '../../Components/Introduction/Introduction';
 import { RollPanel } from '../../Components/RollPanel/RollPanel';
 
 export interface IRollHubState {
-    rolls: IRoll[],
+    pools: Pool[],
 }
 
 export class RollHub extends React.Component<{}, IRollHubState> {
@@ -23,14 +21,14 @@ export class RollHub extends React.Component<{}, IRollHubState> {
         this._factory = new DiceFactory();
 
         this.state = { 
-            rolls: []
+            pools: []
         };
     }
 
     public render() {
 
-        const rolls = this.state.rolls.slice().reverse().map(roll =>
-            <RollPanel key={roll.id} roll={roll} />
+        const rolls = this.state.pools.slice().reverse().map(roll =>
+            <RollPanel key={roll.id} pool={roll} />
         );
 
         return (
@@ -45,37 +43,34 @@ export class RollHub extends React.Component<{}, IRollHubState> {
     }
 
     private submitExpression = (expression: string): string | null => {
-        const roll = this.createRoll(expression);
+        const pool = this.createRoll(expression);
 
-        if (roll) {
-            this.addRoll(roll);
-            const converter = new Converter(this._factory);
-            return converter.serialize(roll.dice);
+        if (pool) {
+            this.addPool(pool);
+            return pool.expression;
         }
 
         return null;
     }
 
-    private addRoll = (roll: IRoll) => {
-        const rolls : IRoll[] = [ ...this.state.rolls.slice().reverse().slice(0, 20).reverse(), roll ];
-        this.setState({ rolls });
+    private addPool = (pool: Pool) => {
+        const pools : Pool[] = [ ...this.state.pools.slice().reverse().slice(0, 20).reverse(), pool ];
+        this.setState({ pools });
         window.scrollTo(0, 0);
     }
 
-    private createRoll(expression: string) : IRoll | null {
-        const dice = this._factory.createFromExpression(expression);
-        const converter = new Converter(this._factory);
+    private createRoll(expression: string) : Pool | null {
+        const pool = this._factory.createFromExpression(expression);
 
-        if (dice && dice.length > 0) {
-            dice.sort((a, b) => b.sides - a.sides);
-            const roll : IRoll = { id: IdGenerator.id(), dice, expression: converter.serialize(dice) };
-            return roll;
+        if (pool.dice && pool.dice.length > 0) {
+            pool.dice.sort((a, b) => b.sides - a.sides);
+            return pool;
         }
 
         return null;
     }
 
     private clearRolls = () => {
-        this.setState({ rolls: [] });
+        this.setState({ pools: [] });
     }
 }

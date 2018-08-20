@@ -1,7 +1,8 @@
 import { Chance } from 'chance';
 import { Converter } from './Converter';
-import { Die } from './Die';
+import Die from './Die';
 import { IntGenerator } from './IntGenerator';
+import Pool from './Pool';
 
 export default class DiceFactory {
     private _generator: IntGenerator;
@@ -25,7 +26,11 @@ export default class DiceFactory {
         return result;
     }
 
-    public createFromExpression(expression: string): Die[] {
+    public createPool(dice: Die[], constant: number): Pool {
+        return new Pool(dice, constant);
+    }
+
+    public createFromExpression(expression: string): Pool {
         const converter = new Converter(this);
         return converter.parseString(expression);
     }

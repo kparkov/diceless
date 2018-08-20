@@ -18,7 +18,7 @@ export interface IDieProps {
     sides: number;
 }
 
-export class DieVisual extends React.Component<IDieProps, {}> {
+export default class DieVisual extends React.Component<IDieProps, {}> {
 
     public render() {
 

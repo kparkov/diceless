@@ -1,31 +1,39 @@
 import * as React from 'react';
-import { IRoll } from '../../Library/IRoll';
+
+import Pool from '../../Library/Pool';
 import PoolStats from '../../Library/PoolStats';
 
-import { DieVisual } from './DieVisual';
+import DieVisual from './DieVisual';
 
 interface IDicePanelProps {
-    roll: IRoll,
+    pool: Pool,
     stats: PoolStats
 }
 
-function Sum(props: { stats: PoolStats }) {
+function Sum(props: { stats: PoolStats, constant: number }) {
+
+    let cString = null;
+
+    if (props.constant !== 0) {
+        cString = (props.constant < 0 ? ' - ' : ' + ') + Math.abs(props.constant) + ' ';
+    }
+
     return (
         <span 
             style={{ 
                 fontSize: '22px',
-                left: '15px',
+                left: '10px',
                 position: 'relative',
                 top: '11px',
             }}
-        >= {props.stats.aggregates.sum}</span>
+        >{cString} = {props.stats.aggregates.sum}</span>
     );
 }
 
 export default class DicePanel extends React.Component<IDicePanelProps, {}> {
     public render() {
 
-        const diceVisuals = this.props.roll.dice.map(d => <DieVisual key={d.id} value={d.value} sides={d.sides} />);
+        const diceVisuals = this.props.pool.dice.map(d => <DieVisual key={d.id} value={d.value} sides={d.sides} />);
 
         return (
             <div 
@@ -35,7 +43,7 @@ export default class DicePanel extends React.Component<IDicePanelProps, {}> {
                 }}
             >
                 {diceVisuals}
-                <Sum stats={this.props.stats} />
+                <Sum stats={this.props.stats} constant={this.props.pool.constant} />
             </div>
         );
     }

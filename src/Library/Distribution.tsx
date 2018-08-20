@@ -7,11 +7,13 @@ export interface IPermutationCount {
 
 export default class Distribution {
     private _sides: number[] = [];
+    private _constant: number;
     private _permutationCounts: IPermutationCount[] = [];
     private _permutations: number = 0;
 
-    constructor(sides: number[]) {
+    constructor(sides: number[], constant: number) {
         this._sides = sides;
+        this._constant = constant;
 
         if (this._sides.length > 0) {
             this._permutationCounts = this.generateDistribution();
@@ -42,8 +44,6 @@ export default class Distribution {
 
     private generateDistribution(): IPermutationCount[] {
         const base: IPermutationCount[] = [{ value: 0, permutations: 1, atLeast: 1, atMost: 1 }];
-        // const minValue: number = this._sides.length;
-        // const maxValue: number = this._sides.reduce((p, c) => p + c);
         this._permutations = this._sides.reduce((p, c) => p * c);
 
         let cumulativeDistribution: IPermutationCount[] = base;
@@ -68,6 +68,12 @@ export default class Distribution {
 
             cumulativeDistribution = currentDistribution;
         }
+
+        cumulativeDistribution = cumulativeDistribution
+            .map(count => {
+                count.value += this._constant;
+                return count;
+            });
 
         return cumulativeDistribution;
     }

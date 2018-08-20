@@ -1,5 +1,5 @@
 import { Chance } from 'chance';
-import { Die, IDieArguments } from "./Die";
+import Die, { IDieArguments } from "./Die";
 import { IntGenerator } from './IntGenerator';
 
 function createDieArgs() : IDieArguments {

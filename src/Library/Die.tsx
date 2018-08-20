@@ -7,7 +7,7 @@ export interface IDieArguments {
     initialValue?: number;
 }
 
-export class Die {
+export default class Die {
     private _generator: IntGenerator;
     private _id: string;
     private _value: number;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { Die } from '../../Library/Die';
-import { IRoll } from '../../Library/IRoll';
+import Pool from '../../Library/Pool';
 import PoolStats from '../../Library/PoolStats';
 
 import Button from '../Button/Button';
@@ -10,8 +9,7 @@ import DistributionGraph, { DisplayMode } from '../Distribution/DistributionGrap
 import StatHeadlines from '../StatHeadlines/StatHeadlines';
 
 export interface IRollPanelProps {
-    roll: IRoll;
-    onCopy?: (d: Die[]) => void
+    pool: Pool;
 }
 
 interface IRollPanelState {
@@ -24,9 +22,8 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
 
     constructor(props: IRollPanelProps) {
         super(props);
-        this.handleCopy = this.handleCopy.bind(this);
 
-        this._stats = new PoolStats(props.roll.dice);
+        this._stats = new PoolStats(props.pool);
         this.state = { displayGraph: null };
     }
 
@@ -40,9 +37,9 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
                         margin: '0 0 10px 0'
                     }}
                 >
-                    {this.props.roll.expression}
+                    {this.props.pool.expression}
                 </div>
-                <DicePanel roll={this.props.roll} stats={this._stats} />
+                <DicePanel pool={this.props.pool} stats={this._stats} />
                 <StatHeadlines stats={this._stats} />
                 {this.renderGraph()}
             </div>
@@ -51,7 +48,7 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
 
     private renderGraph() {
 
-        if (this.props.roll.dice.length <= 1) {
+        if (this.props.pool.dice.length <= 1) {
             return null;
         }
 
@@ -70,12 +67,6 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
                 </div>
             </div>
         );
-    }
-
-    private handleCopy(): void {
-        if (this.props.onCopy) {
-            this.props.onCopy(this.props.roll.dice);
-        }
     }
 
     private setGraphDisplay = (mode?: DisplayMode) => {
