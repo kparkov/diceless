@@ -44,13 +44,17 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
         return (
             <div style={{ margin: '25px 0 0 0' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                    <tr>
-                        <th style={headerRowStyle}>Sum</th>
-                        <th style={headerRowStyle}>Percent</th>
-                        {orderOfTotal < 16 ? <th style={headerRowStyle}>Permutations</th> : null}
-                        <th style={{ ...headerRowStyle, width: 'auto' }}>&nbsp;</th>
-                    </tr>
-                    {rows}
+                    <thead>
+                        <tr>
+                            <th style={headerRowStyle}>Sum</th>
+                            <th style={headerRowStyle}>Percent</th>
+                            {orderOfTotal < 16 ? <th style={headerRowStyle}>Permutations</th> : null}
+                            <th style={{ ...headerRowStyle, width: 'auto' }}>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
                 </table>
             </div>
         )
@@ -92,7 +96,7 @@ export default class DistributionGraph extends React.Component<IDistributionGrap
         }
 
         return (
-            <tr>
+            <tr key={value}>
                 <td style={rowStyle}>{value}</td>
                 <td style={rowStyle}>{fractionString}</td>
                 {permutationColumn}
