@@ -29,7 +29,7 @@ npm install
 npm start
 ```
 
-This will expose the dice-roller on port 3000. It should automatically open in a new browser tab.
+This will expose diceless on port 3000. It should automatically open in a new browser tab.
 
 ### Tests
 
@@ -45,10 +45,10 @@ There is also a dockerfile included. If you have [docker installed](https://docs
 
 ```shell
 npm run build-docker
-docker run -it -p 5000:5000 dice-roller
+docker run -it -p 5000:5000 diceless
 ```
 
-This will expose the dice-roller on port 5000. Navigate to http://localhost:5000/ to see it.
+This will expose diceless on port 5000. Navigate to http://localhost:5000/ to see it.
 
 ## Possible improvements
 
