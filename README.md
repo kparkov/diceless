@@ -2,7 +2,7 @@
 
 Diceless is a dice roller with a small toolkit for visualizing the probabilities of rolls. It can be used when dice are not readily available, or if you want more feedback about the statistics of a given roll. For a more in-depth toolkit into _just the probability distributions_, I recommend the excellent tool at [anydice.com](https://anydice.com/).
 
-Diceless is designed for speed of use. You can write a dice expression such as '2d6+3d8' and press enter. It will immediately roll the dice and add this expression to a quick roll history, so you can repeat that same roll easily.
+Diceless is designed for speed of use. You can write a dice expression such as '2d6+3d8+4' and press enter. It will immediately roll the dice and add this expression to a quick roll history, so you can repeat that same roll easily.
 
 ![screenshot](res/screen.gif)
 
@@ -52,10 +52,8 @@ This will expose the dice-roller on port 5000. Navigate to http://localhost:5000
 
 ## Possible improvements
 
-- Add a constant to the roll.
 - Complex logic (for example, roll 4d6 and discard the lowest)
 - Special dice (Fate dice, dice with symbols, repeated sides, etc.)
-- Keyboard shortcuts.
 - Shared session of dice rolling.
 - Mobile version.
 
