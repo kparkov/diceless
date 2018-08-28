@@ -1,5 +1,6 @@
 import DiceFactory from "./DiceFactory";
 import Pool from "./Pool";
+import PoolStats from "./PoolStats";
 
 test('Should be able to create a single die with 8 sides', () => {
     const factory = new DiceFactory('seed');
@@ -38,4 +39,18 @@ test('Should be able to correctly interpret 2d6+5+3d8 - 2 + 4 + 1d6 + 3', () => 
     const pool : Pool = factory.createFromExpression('2d6+5+3d8 - 2 + 4 + 1d6 + 3');
     expect(pool.dice).toHaveLength(6);
     expect(pool.constant).toEqual(10);
+});
+
+test('Should be able to correctly interpret 4d4+3d6 -2 + 7', () => {
+    const factory = new DiceFactory('seed');
+    const pool : Pool = factory.createFromExpression('4d4+3d6 -2 + 7');
+    expect(pool.constant).toEqual(5);
+    expect(pool.dice).toHaveLength(7);
+    
+    const stats = new PoolStats(pool);
+    const sumOfDice = pool.dice.map(d => d.value).reduce((p, c) => p + c);
+    expect(sumOfDice).toEqual(25);
+
+    expect(stats.aggregates.sum).toEqual(30);
+    expect(stats.aggregates.average).toEqual(25 / 7);
 });

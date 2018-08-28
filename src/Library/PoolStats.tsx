@@ -45,7 +45,7 @@ export default class PoolStats {
     private createAggregates() : IAggregates {
         const constant = this._pool.constant;
 
-        let average = constant;
+        let average = 0;
         const values = this._pool.dice.map(d => d.value).slice().sort((a, b) => a - b);
         const sides = this._pool.dice.map(d => d.sides).slice().sort();
         const length = values.length;
@@ -60,8 +60,9 @@ export default class PoolStats {
         
         
         if (length > 0) {
-            sum += values.reduce((p, c) => p + c);
-            average += Math.round((sum / length) * 100) / 100;
+            const sumOfDice = values.reduce((p, c) => p + c);
+            sum += sumOfDice;
+            average += sumOfDice / length;
             median += length % 2 === 0 ? ((values[(length / 2) - 1] + values[length / 2])) / 2 : values[Math.floor(length / 2)];
             minimum += values[0];
             maximum += values[length - 1];
