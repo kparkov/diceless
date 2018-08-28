@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { storiesOf } from '@storybook/react';
 
-import DieVisual from '../Components/Die/DieVisual';
+import DieVisual from '../src/Components/Die/DieVisual';
 
 storiesOf('DieVisual', module)
     .add('1d6', () => <DieVisual value={6} sides={6} />)

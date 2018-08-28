@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { storiesOf } from '@storybook/react';
 
-import DiceFactory from '../Library/DiceFactory';
+import DiceFactory from '../src/Library/DiceFactory';
 
-import { RollPanel } from '../Components/RollPanel/RollPanel';
+import { RollPanel } from '../src/Components/RollPanel/RollPanel';
 
 const factory = new DiceFactory('seed');
 const pool = factory.createFromExpression('3d6 + 2');
