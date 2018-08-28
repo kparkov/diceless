@@ -12,7 +12,11 @@ module.exports = {
             loader: 'babel-loader!ts-loader',
             exclude: /node_modules/,
             include
-          }
+          },
+          {
+            test: /\.css$/,
+            loader: 'style-loader!css-loader',
+          },
       ]
   }
 };
