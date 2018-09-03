@@ -29,7 +29,12 @@ export class RollPanel extends React.Component<IRollPanelProps, IRollPanelState>
 
     public render() : JSX.Element {
         return (
-            <div style={{ padding: '10px 10px', borderBottom: '1px solid black', textAlign: 'left' }}>
+            <div style={{ 
+                borderBottom: '1px solid black', 
+                fontFamily: 'Arial',
+                padding: '10px 10px', 
+                textAlign: 'left', 
+            }}>
                 <div 
                     style={{ 
                         fontSize: '18px',
