@@ -27,13 +27,14 @@ export default class DieVisual extends React.Component<IDieProps, {}> {
                 backgroundColor: this.color(this.props.sides),
                 border: '2px solid black',
                 borderRadius: '5px',
-                fontSize: '18px',
+                display: 'inline-block',
+                fontFamily: 'Arial',
                 margin: '0 5px 5px 0',
                 minWidth: '30px',
                 padding: '2px 5px',
                 textAlign: 'center'
             }}>
-                <div style={{fontSize: '14px', color: '#333'}}>d{this.props.sides}</div>
+                <div style={{fontSize: '12px', color: '#333'}}>d{this.props.sides}</div>
                 <div style={{fontSize: '18px'}}>{this.props.value}</div>
             </div>
         );
