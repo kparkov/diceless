@@ -1,9 +1,10 @@
 {
   "name": "diceless",
-  "version": "0.1.0",
+  "version": "0.10.0",
   "private": true,
   "dependencies": {
     "chance": "^1.0.16",
+    "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts-ts": "2.16.0"
