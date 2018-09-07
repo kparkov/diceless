@@ -1,7 +1,7 @@
 import * as React from 'react';
 
+import NumberUtils from '../../Library/NumberUtils';
 import PoolStats from '../../Library/PoolStats';
-
 import KeyValueLabel from '../Label/KeyValueLabel';
 
 interface IStatHeadlinesProps {
@@ -58,20 +58,20 @@ export default class StatHeadlines extends React.Component<IStatHeadlinesProps, 
                     padding: '10px 0',
                 }}>{rarity.text} {hiloString}</div>
                 <KeyValueLabel background={palette.color1} color="white" title="sum" value={aggregates.sum} />
-                <KeyValueLabel background={palette.color2} color="white" title="avg" value={aggregates.average}/>
+                <KeyValueLabel background={palette.color2} color="white" title="avg" value={NumberUtils.numberString(aggregates.average)}/>
                 <KeyValueLabel background={palette.color5} color="white" title="lo" value={aggregates.minimum}/>
                 <KeyValueLabel background={palette.color4} color="white" title="hi" value={aggregates.maximum}/>
                 <KeyValueLabel background={palette.color6} color="white" title="bounds" value={`${aggregates.lowestPossible}-${aggregates.highestPossible}`} />
-                <KeyValueLabel background={palette.color3} color="black" title="exp" value={aggregates.expected}/>
-                <KeyValueLabel background="green" color="white" title="at least" value={this.percentageString(atLeast)} />
-                <KeyValueLabel background="green" color="white" title="at most" value={this.percentageString(atMost)} />
+                <KeyValueLabel background={palette.color3} color="black" title="exp" value={NumberUtils.numberString(aggregates.expected)}/>
+                <KeyValueLabel background="green" color="white" title="at least" value={NumberUtils.percentageString(atLeast)} />
+                <KeyValueLabel background="green" color="white" title="at most" value={NumberUtils.percentageString(atMost)} />
             </div>
         );
     }
 
-    private percentageString(fraction: number): string {
-        return (Math.round(fraction * 10000) / 100) + '%';
-    }
+
+
+
 
     private getRarity(loPercentage: number): IRarity {
         for (const rarity of rarityChecks) {
