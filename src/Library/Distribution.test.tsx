@@ -24,3 +24,17 @@ test('Should correctly assess 2d6 + 1d8 + 4', () => {
     expect(distribution.permutationCountsOf(23).permutations).toEqual(1);
     expect(distribution.percentage(distribution.permutationCountsOf(15).permutations)).toEqual(0.1111111111111111);
 });
+
+test('The probability of something very unlikely should never be rounded to 100', () => {
+
+    const sides: number[] = [];
+
+    for (let i = 0; i < 40; i++) {
+        sides.push(6);
+    }
+
+    const distribution = new Distribution(sides, 0);
+
+    expect(distribution.percentage(distribution.permutationCountsOf(70).atLeast)).toBeLessThan(1);
+
+});
