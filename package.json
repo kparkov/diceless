@@ -7,7 +7,7 @@
     "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-scripts-ts": "2.16.0"
+    "react-scripts-ts": "4.0.8"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -28,7 +28,7 @@
     "@types/storybook__react": "^3.0.9",
     "@types/chance": "^1.0.1",
     "typescript": "^3.0.1",
-    "@storybook/react": "^3.4.10",
+    "@storybook/react": "^10.2.10",
     "@storybook/addon-actions": "^3.4.10",
     "@storybook/addon-links": "^3.4.10",
     "@storybook/addons": "^3.4.10",
