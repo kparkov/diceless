@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Diceless/Diceless.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Diceless.Tests/Diceless.Tests.csproj" />
+  </Folder>
+</Solution>
