@@ -9,6 +9,7 @@ dotnet/**/obj/
 dotnet/**/*.user
 dotnet/**/.vs/
 dotnet/**/TestResults/
+dotnet/**/diag.*.txt
 
 # misc
 .DS_Store
